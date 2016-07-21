@@ -1,0 +1,55 @@
+######################################################
+###### CREATE BOXPLOT SUBSCORE 1 VS SEMESTERS #######
+######################################################
+boxplot1 <- ggplot(subset(CHM4611.3, !is.na(Subscore.1)), aes(x = as.factor(Term.y), y = Subscore.1)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(x="Semesters", y="ETS Subscore 1") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue", 
+angle = 90, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))
+
+#title ="ETS Subscore 1 Scores by Semester",
+print(boxplot1)
+
+
+######################################################
+###### CREATE BOXPLOT SUBSCORE 2 VS SEMESTERS ########
+######################################################
+boxplot2 <- ggplot(subset(CHM4611.3, !is.na(Subscore.2)), aes(x = as.factor(Term.y), y = Subscore.2)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(#title= "ETS Subscore 2 Scores by Semester", 
+  x="Semesters", y="ETS Subscore 2") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue",
+angle = 40, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))
+
+print(boxplot2)
+
+
+######################################################
+###### CREATE BOXPLOT SUBSCORE 3 VS SEMESTERS #######
+######################################################
+boxplot3 <- ggplot(subset(CHM4611.3, !is.na(Subscore.3)), aes(x = as.factor(Term.y), y = Subscore.3)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(#title= "ETS Subscore 3 Scores by Semester", 
+  x="Semesters", y="ETS Subscore 3") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue",
+angle = 40, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))                                                                                                                                                                                                                           
+
+print(boxplot3)
+
+
+######################################################
+###### CREATE BOXPLOT SUBSCORE 4 VS SEMESTERS #######
+######################################################
+boxplot4 <- ggplot(subset(CHM4611.3, !is.na(Subscore.3)), aes(x = as.factor(Term.y), y = Subscore.3)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(#title= "ETS Subscore 4 Scores by Semester", 
+  x="Semesters", y="ETS Subscore 4") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue",
+angle = 40, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))                                                                                                                                                                                                                           
+
+print(boxplot4)
+
+
+
+grid.arrange(boxplot1,boxplot2,boxplot3,boxplot4,ncol=2)
+blank <- rectGrob(gp=gpar(col="white"))
+grid.arrange(boxplot1,boxplot2,boxplot3,boxplot4,ncol=2, top=textGrob("ETS Subscores by Semester", gp=gpar(fontsize=20,font=4,col="indianred4")))
+                                        
+
+gpar(col="blue",lty="solid",lwd=3,fontsize=15)
