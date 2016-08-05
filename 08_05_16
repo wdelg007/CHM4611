@@ -1,0 +1,410 @@
+# CHM4611
+####### July 20th #######
+
+library(gridExtra)
+library(ggplot2)
+library(psych)
+library(plyr)
+library(reshape) ####error#####
+library(car)
+library(plotrix) ####error#####
+library(grid)
+
+####Notes
+#to find the file path: use file.choose(). This command will allow you to choose the file you want and will give you the path in the console.
+
+##### Read CSV Files : Grades and EPS SCORES files ######
+read.csv("/Users/Wendy/Desktop/FIU_JD_CRSE_GRADE_DATA_2_CHM4611_160601_csv.csv")
+read.csv("/Users/Wendy/Desktop/HHMI_LOPEZDELAVEGA_EPS_FILES_TOGETHER_71516_csv.csv")
+
+#############################
+####### RENAME FILES ########
+#############################
+CHM4611.1 <- read.csv("/Users/Wendy/Desktop/FIU_JD_CRSE_GRADE_DATA_2_CHM4611_160601_csv.csv")
+CHM4611.2 <- read.csv("/Users/Wendy/Desktop/HHMI_LOPEZDELAVEGA_EPS_FILES_TOGETHER_71516_csv.csv")
+str(CHM4611.1)
+str(CHM4611.2)
+
+####################################################################
+######## Rename column "ID.STUDENT" in Data Frame into "ID" ########
+####################################################################
+names(CHM4611.2)[names(CHM4611.2) == 'STUDENT.ID'] <- 'ID'
+
+#############################
+######## Merge by ID ########
+#############################
+CHM4611.3 <- merge(CHM4611.1,CHM4611.2, by="ID", all.x=T)
+DIAG_1158_MAC2311 <-merge(MAC2311_1158_Diag, Diag1158, by="ID", all=T)
+
+################################################################
+######## SAVING DATAFRAME AS CVS IN A SPECIFIC LOCATION ########
+################################################################
+write.csv(CHM4611.3, file = "CHM4611.3 R STUDIO.CSV")
+setwd("/Users/Wendy/Desktop/Inorganic CVS files")
+
+######################################################
+###### CREATE BOXPLOT TOTAL SCORE VS SEMESTERS ####### "as.factor" to tell R that it is a category and not a number.#####
+###################################################### "scale_x_discrete(labels...)" to rename  x axis.
+boxplot0 <- ggplot(CHM4611.3, aes(x = as.factor(Term.y), y = TOTAL.SCORE)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(title= "Total ETS Scores by Semester", x="Semesters", y="ETS Total Score") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue",
+angle = 40, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))
+
+print(boxplot0)
+
+table(CHM4611.3$TOTAL.SCORE)
+table(CHM4611.3$Term.y)
+
+
+
+######################################################
+###### CREATE BOXPLOT SUBSCORE 1 VS SEMESTERS #######
+######################################################
+boxplot1 <- ggplot(subset(CHM4611.3, !is.na(Subscore.1)), aes(x = as.factor(Term.y), y = Subscore.1)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(x="Semester ETS Test", y="ETS Subscore 1") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue", 
+angle = 90, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))
+
+#title ="ETS Subscore 1 Scores by Semester",
+print(boxplot1)
+
+
+######################################################
+###### CREATE BOXPLOT SUBSCORE 2 VS SEMESTERS ########
+######################################################
+boxplot2 <- ggplot(subset(CHM4611.3, !is.na(Subscore.2)), aes(x = as.factor(Term.y), y = Subscore.2)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(#title= "ETS Subscore 2 Scores by Semester", 
+  x="Semesters", y="ETS Subscore 2") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue",
+angle = 40, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))
+
+print(boxplot2)
+
+
+######################################################
+###### CREATE BOXPLOT SUBSCORE 3 VS SEMESTERS #######
+######################################################
+boxplot3 <- ggplot(subset(CHM4611.3, !is.na(Subscore.3)), aes(x = as.factor(Term.y), y = Subscore.3)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(#title= "ETS Subscore 3 Scores by Semester", 
+  x="Semesters", y="ETS Subscore 3") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue",
+angle = 40, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))                                                                                                                                                                                                                           
+
+print(boxplot3)
+
+
+######################################################
+###### CREATE BOXPLOT SUBSCORE 4 VS SEMESTERS #######
+######################################################
+boxplot4 <- ggplot(subset(CHM4611.3, !is.na(Subscore.3)), aes(x = as.factor(Term.y), y = Subscore.3)) + geom_boxplot(fill="cadetblue", color="chocolate4") + 
+labs(#title= "ETS Subscore 4 Scores by Semester", 
+  x="Semesters", y="ETS Subscore 4") + scale_x_discrete(labels = c("Fall 12", "Spring 13",
+"Fall 13", "Spring 14", "Fall 14", "Spring 15", "Fall 15", "Spring 16")) + theme(axis.text.x= element_text(colour= "cadetblue",
+angle = 40, size = 12, vjust = 0.6),axis.text.y=element_text(colour = "cadetblue", size = 12), title=element_text(colour = "indianred4", size = 15))                                                                                                                                                                                                                           
+
+print(boxplot4)
+
+
+
+grid.arrange(boxplot1,boxplot2,boxplot3,boxplot4,ncol=2)
+blank <- rectGrob(gp=gpar(col="white"))
+grid.arrange(boxplot1,boxplot2,boxplot3,boxplot4,ncol=2, top=textGrob("ETS Subscores by Semester", gp=gpar(fontsize=20,font=4,col="indianred4")))
+                                        
+
+gpar(col="blue",lty="solid",lwd=3,fontsize=15)
+
+
+####################################################
+##July 22nd 2016##
+
+
+###########################################
+###### ETS by term they took CHM4611 ######
+###########################################
+
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Subscore.3)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4") 
+p <- p + labs(x="CHM 4611 Semester", y="ETS Subscore 3")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.S3_CHM4611Semester ######
+ETS.S3_CHM4611Semester<- p
+
+###### Print to see how graph looks #########
+print(ETS.S3_CHM4611Semester)
+
+
+###################################################
+##### Total Score by term they took CHM4611 #######
+###################################################
+
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = TOTAL.SCORE)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(title= "ETS Total Score by Semester", x="CHM 4611 Semester", y="ETS Total Score")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.T.SCORE_CHM4611Semester ####
+ETS.T.Score_CHM4611Semester<- p
+
+####### Print to see how graph looks #######
+print(ETS.T.Score_CHM4611Semester)
+
+
+###################################################
+##### Subscore 1 by term they took CHM4611 #######
+###################################################
+
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Subscore.1)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Subscore 1")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.S1_CHM4611Semester ####
+ETS.S1_CHM4611Semester <- p
+
+####### Print to see how graph looks #######
+print(ETS.S1_CHM4611Semester)
+
+
+###################################################
+##### Subscore 2 by term they took CHM4611 #######
+###################################################
+
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Subscore.2)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Subscore 2")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.S1_CHM4611Semester ####
+ETS.S2_CHM4611Semester <- p
+
+####### Print to see how graph looks #######
+print(ETS.S2_CHM4611Semester)
+
+
+###################################################
+##### Subscore 4 by term they took CHM4611 #######
+###################################################
+
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Subscore.4)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Subscore 4")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.S1_CHM4611Semester ####
+ETS.S4_CHM4611Semester <- p
+
+####### Print to see how graph looks #######
+print(ETS.S4_CHM4611Semester)
+
+
+table(CHM4611.3$Term.x, CHM4611.3$Subscore.3)  
+describeBy(CHM4611.3$Subscore.3, CHM4611.3$Term.x)
+table(CHM4611.3$Term.x, CHM4611.3$Term.y)
+
+grid.arrange(ETS.S1_CHM4611Semester,ETS.S2_CHM4611Semester,ETS.S3_CHM4611Semester,ETS.S4_CHM4611Semester,ncol=2, top=textGrob("ETS Subscores by Semester", gp=gpar(fontsize=20,font=4,col="indianred4")))
+
+
+######################################################
+###### ETS Percentile by term they took CHM4611 ######
+######################################################
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = X4)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4") 
+p <- p + labs(x="CHM 4611 Semester", y="ETS Subscore 3")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.S3_CHM4611Semester ######
+ETSPerc.S3_CHM4611Semester<- p
+
+###### Print to see how graph looks #########
+print(ETS.S3_CHM4611Semester)
+
+#### 07/29/16 ####
+###################################################
+##### Total Percentile Score by term they took CHM4611 #######
+###################################################
+names(CHM4611.3)[names(CHM4611.3) == 'X1'] <- 'TotalPercentile'
+
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x) , y = TotalPercentile)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Total Percentile")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+print(p)
+###### Renamed p boxplot to ETS.T.SCORE_CHM4611Semester ####
+ETS.T.Percentile_CHM4611Semester<- p
+
+####### Print to see how graph looks #######
+print(ETS.T.Score_CHM4611Semester)
+
+
+###################################################
+##### Subscore 1 by term they took CHM4611 #######
+###################################################
+names(CHM4611.3)[names(CHM4611.3) == 'X2'] <- 'Percentile.S.1'
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Percentile.S.1)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Percentile S1")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.S1_CHM4611Semester ####
+ETS.S1Percentile_CHM4611Semester <- p
+
+####### Print to see how graph looks #######
+print(ETS.S1Percentile_CHM4611Semester)
+
+
+###################################################
+##### Percentile 2 by term they took CHM4611 #######
+###################################################
+names(CHM4611.3)[names(CHM4611.3) == 'X3'] <- 'Percentile.S.2'
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Percentile.S.2)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Percentile S2")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### Renamed p boxplot to ETS.S1_CHM4611Semester ####
+ETS.S2Percentile_CHM4611Semester <- p
+
+####### Print to see how graph looks #######
+print(ETS.S2Percentile_CHM4611Semester)
+
+
+###################################################
+##### Percentile 3 by term they took CHM4611 #######
+###################################################
+names(CHM4611.3)[names(CHM4611.3) == 'X4'] <- 'Percentile.S.3'
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Percentile.S.3)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Percentile S3")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### ETS.S2_CHM4611d p boxplot to ETS.S1_CHM4611Semester ####
+ETS.S3Percentile_CHM4611Semester <- p
+
+####### Print to see how graph looks #######
+print(ETS.S3Percentile_CHM4611Semester)
+
+
+###################################################
+##### Percentile 4 by term they took CHM4611 #######
+###################################################
+names(CHM4611.3)[names(CHM4611.3) == 'X5'] <- 'Percentile.S.4'
+p <- ggplot(CHM4611.3, aes(x = as.factor(Term.x), y = Percentile.S.4)) + geom_boxplot()
+p <- p + geom_boxplot(fill="cadetblue", color="chocolate4")
+p <- p + labs(x="CHM 4611 Semester", y="ETS Percentile S4")
+p <- p + scale_x_discrete(labels = c("Fall 11","Fall 12","Fall 13", "Sum 14", "Fall 14", "Fall 15"))
+p <- p + theme(axis.text.x= element_text(colour= "cadetblue",angle = 40, size = 12, vjust = 0.6))
+p <- p + theme(axis.text.y=element_text(colour = "cadetblue", size = 12))
+p <- p + theme(title=element_text(colour = "indianred4", size = 15))
+
+###### ETS.S2_CHM4611d p boxplot to ETS.S1_CHM4611Semester ####
+ETS.S4Percentile_CHM4611Semester <- p
+
+table(CHM4611.3$Term.x, CHM4611.3$Term.y)
+
+####### Print to see how graph looks #######
+print(ETS.S4Percentile_CHM4611Semester)
+
+grid.arrange(ETS.S1Percentile_CHM4611Semester,ETS.S2Percentile_CHM4611Semester,ETS.S3Percentile_CHM4611Semester,ETS.S4Percentile_CHM4611Semester,ncol=2, top=textGrob("ETS Percentiles by CHM 4611 Semester", gp=gpar(fontsize=20,font=4,col="indianred4")))
+
+########################################################
+########### Merge Data Frames Together #################
+########################################################
+########################################################
+####### Reading CSV files and Renaming Files ###########
+########################################################
+file.choose()
+
+Acad.Prog.1 <- read.csv("C:\\Users\\Wendy\\Desktop\\ACAD_PROG_CSV\\FIU_STEM_ACADEMIC_PROGRESSION_476707713-2.csv")
+Acad.Prog.2 <- read.csv("C:\\Users\\Wendy\\Desktop\\ACAD_PROG_CSV\\FIU_STEM_ACADEMIC_PROGRESSION_476707713-3.csv")
+Acad.Prog.3 <- read.csv("C:\\Users\\Wendy\\Desktop\\ACAD_PROG_CSV\\FIU_STEM_ACADEMIC_PROGRESSION_476707713-4.csv")
+Acad.Prog.4 <- read.csv("C:\\Users\\Wendy\\Desktop\\ACAD_PROG_CSV\\FIU_STEM_ACADEMIC_PROGRESSION_476707713-5.csv")
+Acad.Prog.5 <- read.csv("C:\\Users\\Wendy\\Desktop\\ACAD_PROG_CSV\\FIU_STEM_ACADEMIC_PROGRESSION_476707713-5.csv")
+
+
+multmerge <- function(mypath){fileETS.S2_CHM4611s=list.files(path=mypath, full.ETS.S2_CHM4611s=TRUE)
+  datalist = lapply(fileETS.S2_CHM4611s, function(x){read.csv(file=x,header=T)})
+  Reduce(function(x,y) {merge(x,y)}, datalist)}
+
+####### Use rbind(x1,x2,x3,x4,..) to bind by rows. ##############
+AcadCompiled <- rbind(Acad.Prog.1,Acad.Prog.2,Acad.Prog.3,Acad.Prog.4,Acad.Prog.5)
+file.choose()
+read.csv("C:\\Users\\Wendy\\Desktop\\Inorganic CVS files\\AcadCompiled.csv")
+write.csv("C:\\Users\\Wendy\\Desktop\\Inorganic CVS files\\AcadCompiled.csv")
+
+####### Merge By ID and Term #########
+#Rename AcadCompiled term -> Term.x
+names(AcadCompiled)[names(AcadCompiled) == 'Term'] <- 'Term.x'
+#REmove duplicate rows
+AcadCompiled <- unique(AcadCompiled)
+#merge data
+mymergeddata2 <- merge(CHM4611.3,AcadCompiled, by=c("ID","Term.x"), all.x=T)
+
+
+
+
+
+
+#############################
+######### Graphs ############
+#############################
+
+
+
+###########TO DO#############
+#############################
+
+#Table looking at Major by term in CHM 4611 - table of CHM3411.3(mymerged data): term.x and Major
+
+
+table(mymergeddata2$Term.x,mymergeddata2$Acad.Plan.x)
+
+######## FOR NEXT WEEK ########
+#1 Look at HUman Anatomy (Natalie) 
+
+## Linear Models
+#Prediction final grade in CHM 4611
+lm.1 <- lm(Grd.Pt.Unt ~ Max.Score+GPA.x+Sex, data=mymergeddata2)
+summary(lm.1)
+
+#Prediction ETS inorganic score
+lm.2 <- lm(Subscore.4 ~ GPA.x+Sex+Grd.Pt.Unt, data=mymergeddata2)
+summary(lm.2)
+table(mymergeddata2$Term.x)
+#SAT MAth was not significant
+#GPA, gender is significant
+
+table(CHM4611.3$Term.x)
+
+describeBy(mymergeddata2$Max.Score, mymergeddata2$Term.x)
+
